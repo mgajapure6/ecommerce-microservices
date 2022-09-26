@@ -1,7 +1,30 @@
 spring:
   application:
     name: gateway-service
-
+  cloud:
+    gateway:
+      routes:
+      - id: user-service
+        uri: http://localhost:8001
+        predicates:
+        - Path=/api/user/v1/**
+      - id: category-service
+        uri: http://localhost:8002
+        predicates:
+        - Path=/api/cat/v1/**
+      - id: product-service
+        uri: http://localhost:8003
+        predicates:
+        - Path=/api/product/v1/**
+      - id: order-service
+        uri: http://localhost:8004
+        predicates:
+        - Path=/api/user/v1/**
+      - id: cart-service
+        uri: http://localhost:8005
+        predicates:
+        - Path=/api/cart/v1/**
+          
 server:
   port: 8085
   
