@@ -1,7 +1,61 @@
 spring:
   application:
     name: gateway-service
-
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowed-origins: 
+              - ${SHOP_FRONTEND_URI:http://localhost:4100}
+              - ${ADMIN_FRONTEND_URI:http://localhost:4200}
+            allowed-headers: "*"
+            exposed-headers: "*"
+            allow-credentials: true
+            allowed-methods: 
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+      routes:
+      - id: user-service
+        uri: http://localhost:8001
+        predicates:
+        - Path=/api/user/v1/**
+      - id: category-service
+        uri: http://localhost:8002
+        predicates:
+        - Path=/api/cat/v1/**
+      - id: product-service
+        uri: http://localhost:8003
+        predicates:
+        - Path=/api/product/v1/**
+      - id: order-service
+        uri: http://localhost:8004
+        predicates:
+        - Path=/api/user/v1/**
+      - id: cart-service
+        uri: http://localhost:8005
+        predicates:
+        - Path=/api/cart/v1/**
+          
+resilience4j:
+  circuitbreaker:
+    instances:
+      apiGateway:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        automatic-transition-from-open-to-half-open-enabled: true
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        wait-duration-in-open-state: 5s
+        sliding-window-type: COUNT_BASED
+        
 server:
   port: 8085
   
@@ -20,6 +74,9 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
       
 management:
+  health:
+    circuitbreakers:
+      enabled: true
   endpoints:
     web:
       exposure:
