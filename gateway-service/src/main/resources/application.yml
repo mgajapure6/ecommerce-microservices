@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gateway-service
+
+server:
+  port: 8085
+  
+eureka:
+  instance:
+    appName: gateway-service
+    hostname: localhost
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}
+  client:
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

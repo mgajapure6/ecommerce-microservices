@@ -1,0 +1,22 @@
+server:
+  port: 8761
+  
+eureka:
+  instance:
+    appName: eureka-service
+    hostname: localhost 
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+  dashboard:
+    path: /home
+spring:
+  application:
+    name: eureka-service
+  boot:
+    admin:
+      ui:
+        title: Ecommerce Microservices
+      

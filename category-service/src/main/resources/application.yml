@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: category-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecomm_db
+    username: root
+    password: root
+    
+server:
+  port: 8002
+    
+eureka:
+  instance:
+    appName: category-service
+    hostname: localhost
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}
+  client:
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
